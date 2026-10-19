@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Find Indian scholarships by course, state, and scholarship type. Always verify details on official websites.">
+<title>Scholarship Finder India</title>
+<style>
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text: #172033;
+  --muted: #667085;
+  --primary: #3457d5;
+  --primary-dark: #2442b4;
+  --border: #e5e9f2;
+  --accent: #eaf0ff;
+  --success: #087f5b;
+  --shadow: 0 12px 35px rgba(30, 45, 90, .08);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+a { color: inherit; }
+.container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+header {
+  background: linear-gradient(130deg, #172b72 0%, #3457d5 55%, #6b7df0 100%);
+  color: white; padding: 22px 0 58px;
+}
+.nav { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+.brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.08rem; letter-spacing:-.02em; }
+.brand-mark { width:42px; height:42px; display:grid; place-items:center; border-radius:14px; background:rgba(255,255,255,.16); font-size:1.35rem; }
+.nav-link { color:white; text-decoration:none; font-weight:650; opacity:.92; }
+.hero { padding-top:44px; max-width:760px; }
+.eyebrow { display:inline-flex; padding:6px 11px; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.12); border-radius:99px; font-size:.8rem; font-weight:700; }
+h1 { font-size:clamp(2.1rem, 5vw, 3.7rem); line-height:1.08; letter-spacing:-.045em; margin:18px 0 14px; }
+.hero p { font-size:1.06rem; max-width:650px; color:#e7ebff; margin:0; }
+.stats { display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+.stat { min-width:130px; padding:13px 16px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.1); border-radius:15px; }
+.stat strong { display:block; font-size:1.35rem; }
+.stat span { font-size:.8rem; color:#e7ebff; }
+main { margin-top:-30px; padding-bottom:50px; }
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:var(--shadow); }
+.search-panel { padding:22px; }
+.search-top { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:16px; }
+h2 { margin:0; font-size:1.22rem; letter-spacing:-.02em; }
+.search-top p { margin:4px 0 0; color:var(--muted); font-size:.9rem; }
+.reset { border:0; background:transparent; color:var(--primary); font-weight:750; cursor:pointer; padding:8px; }
+.search-box { position:relative; }
+.search-box span { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.1rem; }
+input, select {
+  width:100%; border:1px solid #d9dfeb; border-radius:12px; background:#fff; color:var(--text);
+  padding:13px 14px; font:inherit; outline:none; min-height:48px;
+}
+.search-box input { padding-left:45px; }
+input:focus, select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(52,87,213,.12); }
+.filters { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin-top:13px; }
+.filter label { display:block; font-size:.78rem; color:var(--muted); font-weight:750; margin:0 0 6px 2px; }
+.results-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin:26px 2px 14px; }
+.results-bar p { margin:0; color:var(--muted); font-size:.92rem; }
+.results-bar strong { color:var(--text); }
+.sort-select { width:auto; min-width:175px; padding:9px 12px; min-height:42px; font-size:.88rem; }
+.cards { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px; }
+.card { display:flex; flex-direction:column; min-height:265px; padding:19px; transition:transform .18s ease, box-shadow .18s ease; }
+.card:hover { transform:translateY(-3px); box-shadow:0 15px 35px rgba(30,45,90,.12); }
+.card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.icon { width:42px; height:42px; flex:0 0 auto; display:grid; place-items:center; border-radius:13px; background:var(--accent); font-size:1.25rem; }
+.tag { display:inline-block; border-radius:99px; padding:5px 9px; background:#f1f3f9; color:#4f5d79; font-size:.72rem; font-weight:750; }
+.card h3 { margin:15px 0 7px; font-size:1.03rem; line-height:1.35; letter-spacing:-.015em; }
+.amount { font-size:1rem; font-weight:850; color:var(--success); margin:0 0 8px; }
+.meta { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
+.meta span { color:var(--muted); background:#f7f8fb; border:1px solid #edf0f5; border-radius:8px; padding:4px 7px; font-size:.75rem; }
+.card .description { color:var(--muted); font-size:.85rem; margin:0 0 16px; flex:1; }
+.card-actions { display:flex; gap:9px; align-items:center; }
+.btn { display:inline-flex; justify-content:center; align-items:center; gap:7px; text-decoration:none; border-radius:11px; padding:10px 13px; font-weight:750; font-size:.84rem; cursor:pointer; border:1px solid var(--border); }
+.btn-primary { background:var(--primary); color:white; border-color:var(--primary); }
+.btn-primary:hover { background:var(--primary-dark); }
+.btn-light { background:white; color:var(--text); }
+.empty { text-align:center; padding:55px 20px; grid-column:1/-1; }
+.empty .emoji { font-size:2rem; }
+.empty h3 { margin:8px 0; }
+.empty p { color:var(--muted); margin:0; }
+.note { margin-top:24px; padding:18px 20px; background:#fff8e8; border:1px solid #f2e2b8; border-radius:16px; color:#684d12; font-size:.88rem; }
+.note strong { display:block; margin-bottom:4px; }
+footer { padding:28px 0 36px; border-top:1px solid var(--border); color:var(--muted); font-size:.84rem; }
+.footer-inner { display:flex; flex-wrap:wrap; justify-content:space-between; gap:15px; }
+footer a { color:var(--primary); text-decoration:none; font-weight:700; }
+@media (max-width: 900px) { .cards { grid-template-columns:repeat(2,minmax(0,1fr)); } .filters { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width: 600px) {
+  .container { width:min(100% - 22px, 1180px); }
+  header { padding-bottom:52px; }
+  .hero { padding-top:34px; }
+  .search-panel { padding:15px; border-radius:18px; }
+  .cards { grid-template-columns:1fr; }
+  .filters { grid-template-columns:1fr 1fr; gap:10px; }
+  .search-top { align-items:flex-start; }
+  .results-bar { align-items:flex-start; flex-direction:column; }
+  .sort-select { width:100%; }
+  .stat { flex:1; min-width:100px; }
+}
+@media (max-width:390px) { .filters { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav class="nav">
+      <div class="brand"><div class="brand-mark">🎓</div><span>Scholarship Finder India</span></div>
+      <a class="nav-link" href="#scholarships">Find scholarships ↓</a>
+    </nav>
+    <section class="hero">
+      <span class="eyebrow">YOUR EDUCATION • YOUR OPPORTUNITY</span>
+      <h1>Find scholarships.<br>Move your future forward.</h1>
+      <p>Explore scholarship programmes for school, Intermediate, diploma, degree, engineering, postgraduate and overseas study. Search and filter the directory to find opportunities worth checking.</p>
+      <div class="stats">
+        <div class="stat"><strong id="totalCount">100+</strong><span>directory entries</span></div>
+        <div class="stat"><strong>Free</strong><span>to explore</span></div>
+        <div class="stat"><strong>India</strong><span>and international</span></div>
+      </div>
+    </section>
+  </div>
+</header>
+
+<main class="container" id="scholarships">
+  <section class="panel search-panel" aria-label="Search and filter scholarships">
+    <div class="search-top">
+      <div><h2>Explore scholarships</h2><p>Search by name, course, state or scholarship type.</p></div>
+      <button class="reset" id="resetBtn" type="button">Reset filters ↺</button>
+    </div>
+    <div class="search-box">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="Try “Diploma”, “Telangana”, “engineering”…" aria-label="Search scholarships">
+    </div>
+    <div class="filters">
+      <div class="filter"><label for="courseFilter">COURSE / LEVEL</label><select id="courseFilter"><option value="">All courses</option></select></div>
+      <div class="filter"><label for="groupFilter">SCHOLARSHIP CATEGORY</label><select id="groupFilter"><option value="">All categories</option></select></div>
+      <div class="filter"><label for="stateFilter">STATE / SCOPE</label><select id="stateFilter"><option value="">All states / scopes</option></select></div>
+      <div class="filter"><label for="amountFilter">AMOUNT INFORMATION</label><select id="amountFilter"><option value="">All entries</option><option value="known">Amount listed</option><option value="check">Verify amount</option></select></div>
+    </div>
+  </section>
+
+  <div class="results-bar">
+    <p id="resultCount" aria-live="polite">Loading scholarships…</p>
+    <select id="sortFilter" class="sort-select" aria-label="Sort scholarships">
+      <option value="name">Sort: A to Z</option>
+      <option value="group">Sort: Category</option>
+    </select>
+  </div>
+  <section class="cards" id="scholarshipGrid" aria-label="Scholarship results"></section>
+
+  <aside class="note">
+    <strong>⚠️ Before applying</strong>
+    This is a discovery directory, not an official government portal. Scheme names, eligibility, amounts, deadlines and application links can change. Some entries are broad programme directories rather than separate awards. Always open the official source and confirm the latest notice before applying. Never pay an unknown person who promises to guarantee a scholarship.
+  </aside>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> Scholarship Finder India · Student-friendly scholarship directory</div>
+    <div>
+      Official starting points:
+      <a href="https://scholarships.gov.in/All-Scholarships" target="_blank" rel="noopener noreferrer">NSP</a> ·
+      <a href="https://telanganaepass.cgg.gov.in/" target="_blank" rel="noopener noreferrer">Telangana ePASS</a> ·
+      <a href="https://www.myscheme.gov.in/" target="_blank" rel="noopener noreferrer">myScheme</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const scholarships = [
+  {name:"PM-USP Central Sector Scholarship",group:"Central Government",course:"Degree",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Merit-based support for eligible college and university students."},
+  {name:"National Means-cum-Merit Scholarship (NMMS)",group:"Central Government",course:"School",scope:"India",amount:"₹12,000 per year (verify current notice)",link:"https://scholarships.gov.in/",description:"For eligible school students selected under the scheme."},
+  {name:"AICTE Pragati Diploma Scholarship",group:"Technical Education",course:"Diploma",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Technical education scholarship for eligible girl students; verify current rules."},
+  {name:"AICTE Pragati Degree Scholarship",group:"Technical Education",course:"Degree",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Technical education support for eligible students; check the current call."},
+  {name:"AICTE Saksham Diploma Scholarship",group:"Technical Education",course:"Diploma",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"For eligible students with disabilities in approved technical courses."},
+  {name:"AICTE Saksham Degree Scholarship",group:"Technical Education",course:"Degree",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"For eligible students with disabilities in approved technical courses."},
+  {name:"AICTE Swanath Diploma Scholarship",group:"Technical Education",course:"Diploma",scope:"India",amount:"Check official notice",link:"https://www.myscheme.gov.in/schemes/aicte-ssss",description:"For eligible students in specified circumstances; check the current notice."},
+  {name:"AICTE Swanath Degree Scholarship",group:"Technical Education",course:"Degree",scope:"India",amount:"Check official notice",link:"https://www.myscheme.gov.in/schemes/aicte-ssss",description:"For eligible students in specified circumstances; check the current notice."},
+  {name:"PM Special Scholarship Scheme for J&K and Ladakh",group:"Central Government",course:"Degree",scope:"Jammu and Kashmir / Ladakh",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Higher-education support for eligible students from the covered regions."},
+  {name:"Prime Minister's Scholarship Scheme for CAPF and Assam Rifles",group:"Central Government",course:"Professional courses",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"For eligible wards and widows covered by the scheme rules."},
+  {name:"Prime Minister's Scholarship Scheme for RPF/RPSF",group:"Central Government",course:"Professional courses",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"For eligible wards of Railway Protection Force personnel."},
+  {name:"PM Scholarship for Wards of Police Personnel Martyred in Terror/Naxal Attacks",group:"Central Government",course:"Higher education",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check the applicable ministry notice and eligibility conditions."},
+  {name:"Post-Matric Scholarship for SC Students",group:"Social Welfare",course:"Post-matric",scope:"India",amount:"Varies by scheme and state",link:"https://scholarships.gov.in/",description:"Support for eligible Scheduled Caste students after matriculation."},
+  {name:"Pre-Matric Scholarship for SC Students",group:"Social Welfare",course:"School",scope:"India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"For eligible students under current pre-matric guidelines."},
+  {name:"Top Class Education Scheme for SC Students",group:"Social Welfare",course:"Higher education",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Support for eligible SC students in notified institutions."},
+  {name:"National Fellowship for Scheduled Caste Students",group:"Social Welfare",course:"Research",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Research fellowship for eligible candidates; check current rules."},
+  {name:"Post-Matric Scholarship for ST Students",group:"Tribal Welfare",course:"Post-matric",scope:"India",amount:"Varies by scheme and state",link:"https://tribal.nic.in/",description:"Support for eligible Scheduled Tribe students after matriculation."},
+  {name:"Pre-Matric Scholarship for ST Students",group:"Tribal Welfare",course:"School",scope:"India",amount:"Check official notice",link:"https://tribal.nic.in/",description:"For eligible students under current tribal welfare guidelines."},
+  {name:"National Fellowship for Higher Education of ST Students",group:"Tribal Welfare",course:"Research",scope:"India",amount:"Check official notice",link:"https://tribal.nic.in/",description:"Fellowship for eligible ST students pursuing research."},
+  {name:"Top Class Education for ST Students",group:"Tribal Welfare",course:"Higher education",scope:"India",amount:"Check official notice",link:"https://tribal.nic.in/",description:"Education assistance for eligible ST students in notified institutions."},
+  {name:"PM YASASVI Scholarship Schemes",group:"Social Welfare",course:"School and higher education",scope:"India",amount:"Check individual scheme notice",link:"https://socialjustice.gov.in/",description:"Umbrella programme covering eligible OBC, EBC and DNT students."},
+  {name:"Top Class Education for OBC, EBC and DNT Students",group:"Social Welfare",course:"Higher education",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Support for eligible students in institutions covered by the scheme."},
+  {name:"Post-Matric Scholarship for OBC Students",group:"Social Welfare",course:"Post-matric",scope:"India",amount:"Varies by scheme and state",link:"https://socialjustice.gov.in/",description:"For eligible OBC students after matriculation."},
+  {name:"Pre-Matric Scholarship for OBC Students",group:"Social Welfare",course:"School",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Check current class, income and category conditions."},
+  {name:"National Fellowship for OBC Students",group:"Social Welfare",course:"Research",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Research support for eligible candidates under the current scheme."},
+  {name:"National Overseas Scholarship for SC Students",group:"Overseas",course:"Postgraduate and PhD",scope:"Overseas",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Overseas study support for eligible applicants under current guidelines."},
+  {name:"National Overseas Scholarship for ST Students",group:"Overseas",course:"Postgraduate and PhD",scope:"Overseas",amount:"Check official notice",link:"https://tribal.nic.in/",description:"Overseas study support for eligible ST applicants."},
+  {name:"National Overseas Scholarship for OBC/EBC/DNT Students",group:"Overseas",course:"Higher education",scope:"Overseas",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Check the current eligibility and application notification."},
+  {name:"National Scholarship for Postgraduate Studies",group:"Higher Education",course:"Postgraduate",scope:"India",amount:"Check official notice",link:"https://www.ugc.gov.in/",description:"Check current UGC scholarship calls and eligibility."},
+  {name:"PG Indira Gandhi Scholarship for Single Girl Child",group:"Higher Education",course:"Postgraduate",scope:"India",amount:"Check official notice",link:"https://www.ugc.gov.in/",description:"UGC scheme information for eligible single girl children in postgraduate study."},
+  {name:"PG Scholarship for University Rank Holders",group:"Higher Education",course:"Postgraduate",scope:"India",amount:"Check official notice",link:"https://www.ugc.gov.in/",description:"Check current UGC availability and eligibility before applying."},
+  {name:"PG Scholarship for Professional Courses for SC/ST Students",group:"Higher Education",course:"Postgraduate",scope:"India",amount:"Check official notice",link:"https://www.ugc.gov.in/",description:"For eligible students in covered professional postgraduate courses."},
+  {name:"Ishan Uday Special Scholarship Scheme",group:"Higher Education",course:"Degree",scope:"North East India",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Higher education scholarship for eligible students from the North Eastern Region."},
+  {name:"National Fellowship for Persons with Disabilities",group:"Higher Education",course:"Research",scope:"India",amount:"Check official notice",link:"https://www.ugc.gov.in/",description:"Check the current fellowship notice and eligibility."},
+  {name:"Central Sector Interest Subsidy Scheme for Education Loans",group:"Education Support",course:"Higher education",scope:"India",amount:"Interest subsidy; conditions apply",link:"https://www.education.gov.in/",description:"Education-loan interest support for eligible students under scheme rules."},
+  {name:"SHRESHTA Scheme for SC Students",group:"Social Welfare",course:"School",scope:"India",amount:"Check official notice",link:"https://socialjustice.gov.in/",description:"Educational support through the current scheme arrangements."},
+  {name:"National Talent Search-related scholarship information",group:"Merit",course:"School",scope:"India",amount:"Check current status",link:"https://ncert.nic.in/",description:"Check official NCERT notices; historical programmes may change or be inactive."},
+  {name:"Kishore Vaigyanik Protsahan Yojana legacy information",group:"Science",course:"Science",scope:"India",amount:"Check current status",link:"https://www.iisc.ac.in/",description:"Legacy science fellowship information; do not assume applications are open."},
+  {name:"INSPIRE Scholarship for Higher Education",group:"Science",course:"Science degree",scope:"India",amount:"Check official notice",link:"https://online-inspire.gov.in/",description:"Support for eligible students pursuing specified basic and natural science degrees."},
+  {name:"INSPIRE Fellowship",group:"Science",course:"Research",scope:"India",amount:"Check official notice",link:"https://online-inspire.gov.in/",description:"Research fellowship information for eligible candidates."},
+  {name:"INSPIRE SHE Fellowship information",group:"Science",course:"Science",scope:"India",amount:"Check official notice",link:"https://online-inspire.gov.in/",description:"Check the official INSPIRE portal for the current scheme name and rules."},
+
+  {name:"Telangana ePASS Post-Matric Scholarship",group:"State Scholarship",course:"Post-matric",scope:"Telangana",amount:"Varies by eligibility and course",link:"https://telanganaepass.cgg.gov.in/",description:"State scholarship and eligible fee-reimbursement support for covered students."},
+  {name:"Telangana ePASS Pre-Matric Scholarship",group:"State Scholarship",course:"School",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"For eligible school students under Telangana schemes."},
+  {name:"Telangana Fee Reimbursement Scheme",group:"State Scholarship",course:"Professional courses",scope:"Telangana",amount:"Depends on eligibility and course",link:"https://telanganaepass.cgg.gov.in/",description:"Fee support for eligible students and approved courses."},
+  {name:"Telangana Overseas Scholarship for SC Students",group:"State Scholarship",course:"Overseas",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Check the latest overseas scholarship notification and category rules."},
+  {name:"Telangana Overseas Scholarship for ST Students",group:"State Scholarship",course:"Overseas",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Check the latest overseas scholarship notification and category rules."},
+  {name:"Telangana Overseas Scholarship for BC/EBC Students",group:"State Scholarship",course:"Overseas",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Check the latest overseas scholarship notification and category rules."},
+  {name:"Telangana Overseas Scholarship for Minority Students",group:"State Scholarship",course:"Overseas",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Check the latest overseas scholarship notification and category rules."},
+  {name:"Telangana Minority Welfare Scholarship information",group:"State Scholarship",course:"School and higher education",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Confirm the current scheme and application route with the state portal."},
+  {name:"Telangana Post-Matric Support for Eligible Polytechnic Students",group:"State Scholarship",course:"Diploma",scope:"Telangana",amount:"Varies by eligibility",link:"https://telanganaepass.cgg.gov.in/",description:"Diploma students should verify category, income and course eligibility."},
+  {name:"Telangana Corporate Admissions Programme",group:"State Scholarship",course:"Eligible courses",scope:"Telangana",amount:"Check official notice",link:"https://telanganaepass.cgg.gov.in/",description:"Check current availability and exact programme details with the state."},
+
+  {name:"Andhra Pradesh Jnanabhumi Scholarships",group:"State Scholarship",course:"School and higher education",scope:"Andhra Pradesh",amount:"Varies by scheme",link:"https://jnanabhumi.ap.gov.in/",description:"State scholarship and fee-support portal."},
+  {name:"Karnataka State Scholarship Portal (SSP)",group:"State Scholarship",course:"School and higher education",scope:"Karnataka",amount:"Varies by scheme",link:"https://ssp.postmatric.karnataka.gov.in/",description:"Find eligible state scholarship schemes through the official portal."},
+  {name:"Kerala e-Grantz Scholarships",group:"State Scholarship",course:"School and higher education",scope:"Kerala",amount:"Varies by scheme",link:"https://egrantz.kerala.gov.in/",description:"State education support portal for eligible students."},
+  {name:"Tamil Nadu State Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Tamil Nadu",amount:"Check official notice",link:"https://www.tn.gov.in/",description:"Explore current scholarship programmes on official state sites."},
+  {name:"Maharashtra MahaDBT Scholarships",group:"State Scholarship",course:"School and higher education",scope:"Maharashtra",amount:"Varies by scheme",link:"https://mahadbt.maharashtra.gov.in/",description:"State portal for many eligible scholarship and fee-support schemes."},
+  {name:"Uttar Pradesh Scholarship and Fee Reimbursement",group:"State Scholarship",course:"School and higher education",scope:"Uttar Pradesh",amount:"Varies by scheme",link:"https://scholarship.up.gov.in/",description:"Official state scholarship and fee-reimbursement portal."},
+  {name:"Bihar Post-Matric Scholarship",group:"State Scholarship",course:"Post-matric",scope:"Bihar",amount:"Varies by scheme",link:"https://pmsonline.bih.nic.in/",description:"For eligible post-matric students under Bihar scheme rules."},
+  {name:"Odisha State Scholarship Portal Schemes",group:"State Scholarship",course:"School and higher education",scope:"Odisha",amount:"Varies by scheme",link:"https://scholarship.odisha.gov.in/",description:"Browse current schemes and eligibility on the state portal."},
+  {name:"West Bengal Swami Vivekananda Merit-cum-Means Scholarship",group:"State Scholarship",course:"School and higher education",scope:"West Bengal",amount:"Varies by course",link:"https://svmcm.wbhed.gov.in/",description:"Merit-cum-means scholarship for eligible West Bengal students."},
+  {name:"West Bengal Aikyashree Scholarship",group:"State Scholarship",course:"School and higher education",scope:"West Bengal",amount:"Varies by scheme",link:"https://wbmdfcscholarship.in/",description:"Scholarship portal for eligible minority students."},
+  {name:"West Bengal Oasis Scholarship",group:"State Scholarship",course:"School and higher education",scope:"West Bengal",amount:"Varies by scheme",link:"https://oasis.gov.in/",description:"State portal for eligible SC, ST and OBC scholarship schemes."},
+  {name:"Rajasthan SJE Scholarship Schemes",group:"State Scholarship",course:"School and higher education",scope:"Rajasthan",amount:"Varies by scheme",link:"https://sje.rajasthan.gov.in/",description:"Check current social justice and empowerment department schemes."},
+  {name:"Haryana Har-Chhatravratti Scholarship",group:"State Scholarship",course:"School and higher education",scope:"Haryana",amount:"Varies by scheme",link:"https://harchhatravratti.highereduhry.ac.in/",description:"State scholarship portal for eligible students."},
+  {name:"Gujarat Digital Gujarat Scholarships",group:"State Scholarship",course:"School and higher education",scope:"Gujarat",amount:"Varies by scheme",link:"https://www.digitalgujarat.gov.in/",description:"Official portal for eligible Gujarat scholarship programmes."},
+  {name:"Madhya Pradesh Scholarship Portal Schemes",group:"State Scholarship",course:"School and higher education",scope:"Madhya Pradesh",amount:"Varies by scheme",link:"https://scholarshipportal.mp.nic.in/",description:"State scholarship portal; check current scheme notices."},
+  {name:"Punjab Dr Ambedkar Scholarship Portal",group:"State Scholarship",course:"Post-matric",scope:"Punjab",amount:"Varies by scheme",link:"https://scholarships.punjab.gov.in/",description:"Official portal for eligible post-matric scholarship schemes."},
+  {name:"Jharkhand e-Kalyan Scholarship",group:"State Scholarship",course:"School and higher education",scope:"Jharkhand",amount:"Varies by scheme",link:"https://ekalyan.cgg.gov.in/",description:"State scholarship portal for eligible students."},
+  {name:"Assam Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Assam",amount:"Check official notice",link:"https://directorateofhighereducation.assam.gov.in/",description:"Explore current scholarship notices from Assam departments."},
+  {name:"Himachal Pradesh ePASS Scholarships",group:"State Scholarship",course:"School and higher education",scope:"Himachal Pradesh",amount:"Varies by scheme",link:"https://hpepass.cgg.gov.in/",description:"State portal for eligible scholarship schemes."},
+  {name:"Uttarakhand Scholarship Schemes",group:"State Scholarship",course:"School and higher education",scope:"Uttarakhand",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Start with the national portal and verify the relevant state department notice."},
+  {name:"Jammu and Kashmir Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Jammu and Kashmir",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check current central and regional scheme notices."},
+  {name:"Ladakh Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Ladakh",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check current central and regional scheme notices."},
+  {name:"Goa Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Goa",amount:"Check official notice",link:"https://www.goa.gov.in/",description:"Look for current student support programmes on official Goa sites."},
+  {name:"Sikkim Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Sikkim",amount:"Check official notice",link:"https://sikkim.gov.in/",description:"Check current state scholarship notices."},
+  {name:"Tripura Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Tripura",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check national and state scheme availability."},
+  {name:"Manipur Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Manipur",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check national and state scheme availability."},
+  {name:"Meghalaya Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Meghalaya",amount:"Check official notice",link:"https://meghalaya.gov.in/",description:"Explore current education support notices."},
+  {name:"Nagaland Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Nagaland",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check national and state scheme availability."},
+  {name:"Mizoram Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Mizoram",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check national and state scheme availability."},
+  {name:"Arunachal Pradesh Scholarship Programmes",group:"State Scholarship",course:"School and higher education",scope:"Arunachal Pradesh",amount:"Check official notice",link:"https://scholarships.gov.in/",description:"Check national and state scheme availability."},
+  {name:"Chhattisgarh Post-Matric Scholarship",group:"State Scholarship",course:"Post-matric",scope:"Chhattisgarh",amount:"Varies by scheme",link:"https://schoolscholarship.cg.nic.in/",description:"Check current eligibility and application dates."},
+  {name:"Uttar Pradesh Dashmottar Scholarship",group:"State Scholarship",course:"Higher education",scope:"Uttar Pradesh",amount:"Varies by scheme",link:"https://scholarship.up.gov.in/",description:"Post-matric and higher-education support; check exact current scheme."},
+  {name:"Maharashtra Post-Matric Scholarship Schemes",group:"State Scholarship",course:"Post-matric",scope:"Maharashtra",amount:"Varies by scheme",link:"https://mahadbt.maharashtra.gov.in/",description:"Search by course, category and department on MahaDBT."},
+  {name:"Karnataka SSP Pre-Matric Scholarship",group:"State Scholarship",course:"School",scope:"Karnataka",amount:"Check official notice",link:"https://ssp.postmatric.karnataka.gov.in/",description:"Check the current official portal for pre-matric opportunities."},
+  {name:"Kerala Minority Scholarship Information",group:"State Scholarship",course:"School and higher education",scope:"Kerala",amount:"Check official notice",link:"https://egrantz.kerala.gov.in/",description:"Verify the specific scheme and correct application portal."},
+  {name:"Odisha Post-Matric Scholarship",group:"State Scholarship",course:"Post-matric",scope:"Odisha",amount:"Varies by scheme",link:"https://scholarship.odisha.gov.in/",description:"Check current post-matric schemes and eligibility."},
+  {name:"Bihar Mukhyamantri Kanya Utthan Yojana",group:"State Scholarship",course:"Eligible education stages",scope:"Bihar",amount:"Check official notice",link:"https://medhasoft.bihar.gov.in/",description:"Eligibility and benefits depend on the relevant component and stage."},
+  {name:"Rajasthan Uttar Matric Scholarship",group:"State Scholarship",course:"Post-matric",scope:"Rajasthan",amount:"Varies by scheme",link:"https://sje.rajasthan.gov.in/",description:"Check the latest official notification and category conditions."},
+  {name:"Haryana Post-Matric Scholarship Schemes",group:"State Scholarship",course:"Post-matric",scope:"Haryana",amount:"Varies by scheme",link:"https://harchhatravratti.highereduhry.ac.in/",description:"Check current scheme conditions and application dates."},
+
+  {name:"Reliance Foundation Undergraduate Scholarship",group:"Private Foundation",course:"Undergraduate",scope:"India",amount:"Check current programme notice",link:"https://www.reliancefoundation.org/",description:"Merit and other criteria apply; check the latest application cycle."},
+  {name:"Reliance Foundation Postgraduate Scholarship",group:"Private Foundation",course:"Postgraduate",scope:"India",amount:"Check current programme notice",link:"https://www.reliancefoundation.org/",description:"For selected postgraduate fields under current programme rules."},
+  {name:"Tata Capital Pankh Scholarship",group:"Private Foundation",course:"School and higher education",scope:"India",amount:"Check current programme notice",link:"https://www.tatacapital.com/",description:"Check current eligibility, course coverage and application dates."},
+  {name:"HDFC Bank Parivartan ECSS Scholarship",group:"Private Foundation",course:"School and college",scope:"India",amount:"Check current programme notice",link:"https://www.hdfcbank.com/",description:"Education support programme; confirm current cycle and eligibility."},
+  {name:"Kotak Kanya Scholarship",group:"Private Foundation",course:"Undergraduate",scope:"India",amount:"Check current programme notice",link:"https://www.kotakeducation.org/",description:"For eligible girl students under current selection criteria."},
+  {name:"Kotak Junior Scholarship",group:"Private Foundation",course:"Junior college",scope:"India",amount:"Check current programme notice",link:"https://www.kotakeducation.org/",description:"Check current class, marks and location requirements."},
+  {name:"Sitaram Jindal Foundation Scholarship",group:"Private Foundation",course:"School and higher education",scope:"India",amount:"Check current programme notice",link:"https://www.sitaramjindalfoundation.org/",description:"Eligibility and support vary by course and applicant details."},
+  {name:"Foundation for Academic Excellence and Access Scholarship",group:"Private Foundation",course:"Higher education",scope:"India",amount:"Check current programme notice",link:"https://www.faeaindia.org/",description:"Check current application announcements and eligibility."},
+  {name:"LIC Golden Jubilee Scholarship",group:"Private / Institutional",course:"Higher education",scope:"India",amount:"Check current programme notice",link:"https://licindia.in/",description:"Verify current scholarship notice and eligibility from LIC."},
+  {name:"Aditya Birla Scholarship Programme",group:"Private Foundation",course:"Selected institutions",scope:"India",amount:"Check current programme notice",link:"https://www.adityabirlascholars.net/",description:"For students at institutions covered by the programme."},
+  {name:"Santoor Scholarship",group:"Private Foundation",course:"Undergraduate",scope:"India",amount:"Check current programme notice",link:"https://www.santoorscholarships.com/",description:"Check current states, course and eligibility conditions."},
+  {name:"Colgate Keep India Smiling Scholarship",group:"Private Foundation",course:"School and higher education",scope:"India",amount:"Check current programme notice",link:"https://www.colgate.com/",description:"Programme availability and criteria may change by year."},
+  {name:"L'Oréal India For Young Women in Science Scholarship",group:"Private Foundation",course:"Science education",scope:"India",amount:"Check current programme notice",link:"https://www.loreal.com/",description:"Check the latest India programme announcement and science-course criteria."},
+  {name:"Infosys Foundation STEM Stars Scholarship",group:"Private Foundation",course:"STEM degree",scope:"India",amount:"Check current programme notice",link:"https://www.infosys.com/infosys-foundation/",description:"Check the current foundation programme details and eligibility."},
+  {name:"Legrand Empowering Scholarship",group:"Private Foundation",course:"Higher education",scope:"India",amount:"Check current programme notice",link:"https://www.legrandscholarship.co.in/",description:"Check current course, gender and eligibility requirements."},
+  {name:"Vidyasaarathi Corporate Scholarships",group:"Scholarship Platform",course:"Various courses",scope:"India",amount:"Varies by sponsor",link:"https://www.vidyasaarathi.co.in/",description:"Platform listing scholarships from different corporate sponsors."},
+  {name:"Buddy4Study Scholarship Listings",group:"Scholarship Platform",course:"Various courses",scope:"India",amount:"Varies by scholarship",link:"https://www.buddy4study.com/",description:"Scholarship discovery platform; confirm details with the sponsor."},
+  {name:"Foundation for Excellence Scholarship",group:"Private Foundation",course:"Engineering and medical",scope:"India",amount:"Check current programme notice",link:"https://www.ffe.org/",description:"Check current academic, financial and course requirements."},
+  {name:"K.C. Mahindra Scholarship for Postgraduate Studies Abroad",group:"Private Foundation",course:"Overseas postgraduate",scope:"Overseas",amount:"Check current programme notice",link:"https://www.kcmet.org/",description:"Overseas postgraduate study support; review current application terms."},
+  {name:"J.N. Tata Endowment Loan Scholarship",group:"Private Foundation",course:"Overseas higher education",scope:"Overseas",amount:"Loan scholarship; check current notice",link:"https://jntataendowment.org/",description:"Education loan scholarship for eligible overseas study."},
+  {name:"Inlaks Shivdasani Scholarships",group:"Private Foundation",course:"Overseas postgraduate",scope:"Overseas",amount:"Check current programme notice",link:"https://inlaksfoundation.org/",description:"Eligibility, eligible institutions and fields are restricted."},
+  {name:"Narotam Sekhsaria Scholarship",group:"Private Foundation",course:"Postgraduate",scope:"Overseas",amount:"Check current programme notice",link:"https://pg.nsfoundation.co.in/",description:"Check the current postgraduate funding terms and application cycle."},
+  {name:"Aga Khan Foundation International Scholarship",group:"International Foundation",course:"Postgraduate",scope:"International",amount:"Check current programme notice",link:"https://www.akdn.org/",description:"Availability and eligible countries vary by programme cycle."},
+  {name:"Commonwealth Scholarship",group:"International",course:"Postgraduate",scope:"United Kingdom",amount:"Check current call",link:"https://cscuk.fcdo.gov.uk/",description:"Check current country nomination and programme requirements."},
+  {name:"Chevening Scholarship",group:"International",course:"Master's degree",scope:"United Kingdom",amount:"Check current call",link:"https://www.chevening.org/",description:"Competitive UK master's scholarship; eligibility and dates vary."},
+  {name:"Erasmus Mundus Joint Masters Scholarship",group:"International",course:"Master's degree",scope:"Europe",amount:"Check current programme",link:"https://erasmus-plus.ec.europa.eu/",description:"Funding depends on the specific joint master's programme."},
+  {name:"Fulbright-Nehru Fellowships",group:"International",course:"Higher education and research",scope:"United States",amount:"Check current call",link:"https://www.usief.org.in/",description:"Programme-specific requirements apply; check official USIEF notices."},
+  {name:"DAAD Scholarships",group:"International",course:"Higher education and research",scope:"Germany",amount:"Varies by programme",link:"https://www.daad.in/",description:"Search DAAD funding by level, subject and programme."},
+  {name:"MEXT Scholarship",group:"International",course:"Higher education",scope:"Japan",amount:"Check current call",link:"https://www.in.emb-japan.go.jp/",description:"Japanese government scholarship; application route depends on category."},
+  {name:"Australia Awards Scholarships",group:"International",course:"Higher education",scope:"Australia",amount:"Check current call",link:"https://www.dfat.gov.au/",description:"Country and programme eligibility conditions apply."},
+  {name:"Gates Cambridge Scholarship",group:"International",course:"Postgraduate",scope:"United Kingdom",amount:"Check current programme",link:"https://www.gatescambridge.org/",description:"Competitive postgraduate scholarship at the University of Cambridge."},
+  {name:"Rhodes Scholarship",group:"International",course:"Postgraduate",scope:"United Kingdom",amount:"Check current programme",link:"https://www.rhodeshouse.ox.ac.uk/",description:"Eligibility and application route depend on constituency."},
+  {name:"University of Oxford Scholarships",group:"International",course:"Higher education",scope:"United Kingdom",amount:"Varies by scholarship",link:"https://www.ox.ac.uk/",description:"Use Oxford's official funding search for course-specific opportunities."},
+  {name:"University of Cambridge Scholarships",group:"International",course:"Higher education",scope:"United Kingdom",amount:"Varies by scholarship",link:"https://www.cam.ac.uk/",description:"Funding depends on course, nationality and scholarship programme."},
+  {name:"University of Toronto International Scholarships",group:"International",course:"Undergraduate",scope:"Canada",amount:"Varies by scholarship",link:"https://future.utoronto.ca/",description:"Check current university awards and admission requirements."},
+  {name:"Lester B. Pearson International Scholarship",group:"International",course:"Undergraduate",scope:"Canada",amount:"Check current programme",link:"https://future.utoronto.ca/pearson/about/",description:"Competitive University of Toronto award with specific nomination rules."},
+  {name:"University of British Columbia International Scholars Program",group:"International",course:"Undergraduate",scope:"Canada",amount:"Varies by award",link:"https://you.ubc.ca/",description:"Check current financial-need, academic and admission requirements."},
+  {name:"Türkiye Scholarships",group:"International",course:"Higher education",scope:"Türkiye",amount:"Check current programme",link:"https://www.turkiyeburslari.gov.tr/",description:"Government scholarship programme; check current application dates."},
+  {name:"Chinese Government Scholarship",group:"International",course:"Higher education",scope:"China",amount:"Check current programme",link:"https://www.campuschina.org/",description:"Check official application channels and the relevant university programme."},
+  {name:"Global Korea Scholarship",group:"International",course:"Higher education",scope:"South Korea",amount:"Check current programme",link:"https://www.studyinkorea.go.kr/",description:"Government scholarship; current eligibility depends on degree and application track."}
+];
+
+const $ = (id) => document.getElementById(id);
+const grid = $("scholarshipGrid");
+const searchInput = $("searchInput");
+const courseFilter = $("courseFilter");
+const groupFilter = $("groupFilter");
+const stateFilter = $("stateFilter");
+const amountFilter = $("amountFilter");
+const sortFilter = $("sortFilter");
+
+function uniqueValues(key) {
+  return [...new Set(scholarships.map(s => s[key]).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+}
+function fillSelect(select, values) {
+  values.forEach(value => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+}
+fillSelect(courseFilter, uniqueValues("course"));
+fillSelect(groupFilter, uniqueValues("group"));
+fillSelect(stateFilter, uniqueValues("scope"));
+$("totalCount").textContent = scholarships.length;
+$("year").textContent = new Date().getFullYear();
+
+function iconFor(group) {
+  if (/Technical|Engineering/i.test(group)) return "💻";
+  if (/State/i.test(group)) return "📍";
+  if (/Overseas|International/i.test(group)) return "🌍";
+  if (/Science/i.test(group)) return "🔬";
+  if (/Social|Tribal/i.test(group)) return "🤝";
+  if (/Private|Foundation|Platform|Institutional/i.test(group)) return "🏅";
+  if (/Research|Higher/i.test(group)) return "📚";
+  return "🎓";
+}
+function safeText(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[char]);
+}
+function filteredScholarships() {
+  const query = searchInput.value.trim().toLowerCase();
+  let list = scholarships.filter(s => {
+    const haystack = [s.name,s.group,s.course,s.scope,s.amount,s.description].join(" ").toLowerCase();
+    const matchQuery = !query || haystack.includes(query);
+    const matchCourse = !courseFilter.value || s.course === courseFilter.value;
+    const matchGroup = !groupFilter.value || s.group === groupFilter.value;
+    const matchState = !stateFilter.value || s.scope === stateFilter.value;
+    const amountKnown = !/check official|check current|varies|depends|loan scholarship/i.test(s.amount);
+    const matchAmount = !amountFilter.value || (amountFilter.value === "known" ? amountKnown : !amountKnown);
+    return matchQuery && matchCourse && matchGroup && matchState && matchAmount;
+  });
+  if (sortFilter.value === "group") list.sort((a,b) => a.group.localeCompare(b.group) || a.name.localeCompare(b.name));
+  else list.sort((a,b) => a.name.localeCompare(b.name));
+  return list;
+}
+function render() {
+  const list = filteredScholarships();
+  $("resultCount").innerHTML = `<strong>${list.length}</strong> scholarship ${list.length === 1 ? "entry" : "entries"} found`;
+  if (!list.length) {
+    grid.innerHTML = `<div class="panel empty"><div class="emoji">🔎</div><h3>No matching scholarships</h3><p>Try another search term or reset the filters.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(s => {
+    const knownAmount = !/check official|check current|varies|depends|loan scholarship/i.test(s.amount);
+    return `<article class="panel card">
+      <div class="card-head"><div class="icon" aria-hidden="true">${iconFor(s.group)}</div><span class="tag">${safeText(s.group)}</span></div>
+      <h3>${safeText(s.name)}</h3>
+      <p class="amount">${safeText(s.amount)}</p>
+      <div class="meta"><span>📘 ${safeText(s.course)}</span><span>📍 ${safeText(s.scope)}</span></div>
+      <p class="description">${safeText(s.description)}</p>
+      <div class="card-actions">
+        <a class="btn btn-primary" href="${safeText(s.link)}" target="_blank" rel="noopener noreferrer">Official website ↗</a>
+        <button class="btn btn-light details-btn" type="button" data-name="${safeText(s.name)}" aria-label="Show details for ${safeText(s.name)}">Details</button>
+      </div>
+    </article>`;
+  }).join("");
+  grid.querySelectorAll(".details-btn").forEach(button => {
+    button.addEventListener("click", () => {
+      const item = scholarships.find(s => s.name === button.dataset.name);
+      if (item) alert(`${item.name}\n\nCategory: ${item.group}\nCourse: ${item.course}\nState / scope: ${item.scope}\nAmount: ${item.amount}\n\n${item.description}\n\nPlease confirm current eligibility, documents and deadlines on the official website:\n${item.link}`);
+    });
+  });
+}
+[searchInput, courseFilter, groupFilter, stateFilter, amountFilter, sortFilter].forEach(el => {
+  el.addEventListener(el === searchInput ? "input" : "change", render);
+});
+$("resetBtn").addEventListener("click", () => {
+  searchInput.value = "";
+  courseFilter.value = "";
+  groupFilter.value = "";
+  stateFilter.value = "";
+  amountFilter.value = "";
+  sortFilter.value = "name";
+  render();
+});
+render();
+</script>
+</body>
+</html>
